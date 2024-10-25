@@ -7,11 +7,7 @@ const indexRouter = require("./routes/index");
 const app = express();
 
 require("dotenv").config();
-app.use(
-  cors({
-    origin: "https://671a3df7c3f2fbf8b139242d--dh-shopping-mall.netlify.app",
-  })
-);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); //req.body가 객체로 인식이 됨
 
