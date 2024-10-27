@@ -47,4 +47,16 @@ authController.authenticate = async (req, res, next) => {
   }
 };
 
+// 관리자 체크
+authController.checkAdminPermission = async (req, res, next) => {
+  try {
+    // token 값을 이용해서 특정 유저를 알아냄
+    const { userId } = req;
+    const user = await User.findById(userId);
+    if (user.level !== "admin") throw new Error("관리자 권한이 아닙니다.");
+    next();
+  } catch (error) {
+    res.status(400).json({ status: "fail", message: error.message });
+  }
+};
 module.exports = authController;
