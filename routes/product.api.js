@@ -13,4 +13,20 @@ router.post(
 
 router.get("/", productController.getProducts);
 
+// 상품 디테일 가지고 오기
+router.get("/:id", productController.getProductDetail);
+router.put(
+  "/:id",
+  authController.authenticate,
+  authController.checkAdminPermission,
+  productController.updateProduct
+);
+
+router.delete(
+  "/:id",
+  authController.authenticate,
+  authController.checkAdminPermission,
+  productController.deleteProduct
+);
+
 module.exports = router;
