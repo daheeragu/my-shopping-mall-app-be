@@ -87,4 +87,16 @@ cartController.editCartItem = async (req, res) => {
     res.status(400).json({ status: "fail", message: error.message });
   }
 };
+
+// 카트 상품 수 가져오기
+cartController.getCartQty = async (req, res) => {
+  try {
+    const { userId } = req;
+    const cart = await Cart.findOne({ userId });
+    if (!cart) throw new Error("해당 유저의 카트가 생성되어 있지 않습니다.");
+    res.status(200).json({ status: "success", cartItemQty: cart.items.length });
+  } catch (error) {
+    res.status(400).json({ status: "fail", message: error.message });
+  }
+};
 module.exports = cartController;

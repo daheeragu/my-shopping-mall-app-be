@@ -12,8 +12,9 @@ router.delete(
   authController.authenticate,
   cartController.deleteItemInCart
 );
-
 //수정하기
 router.put("/:id", authController.authenticate, cartController.editCartItem);
+// 카트 상품 수 가지고 오기
+router.get("/qty", authController.authenticate, cartController.getCartQty);
 
 module.exports = router;
