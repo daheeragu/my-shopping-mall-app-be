@@ -10,6 +10,7 @@ const orderSchema = Schema(
     contact: { type: Object, required: true },
     totalPrice: { type: Number, required: true, default: 0 },
     status: { type: String, default: "preparing" },
+    orderNum: { type: String },
     items: [
       {
         productId: { type: mongoose.ObjectId, ref: Product },
