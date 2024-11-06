@@ -17,7 +17,7 @@ cartController.addItemToCart = async (req, res) => {
     );
     if (existItem) {
       //그렇다면, 에러('이미 아이템이 카트에 있습니다.')
-      throw new Error("아이템이 이미 카트에 담겨 있습니다.");
+      throw new Error("상품이 이미 카트에 담겨 있습니다.");
     }
     // 그렇지 않으면,  카트에 상품을 추가
     cart.items = [...cart.items, { productId, size, qty }];
