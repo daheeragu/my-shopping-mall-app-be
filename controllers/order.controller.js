@@ -3,7 +3,7 @@ const Order = require("../models/Order");
 const productController = require("./product.controller");
 const { randomStringGenerator } = require("../utils/randomStringGenerator");
 const { populate } = require("dotenv");
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 8;
 orderController.createOrder = async (req, res) => {
   try {
     // FE 데이터 받아오기

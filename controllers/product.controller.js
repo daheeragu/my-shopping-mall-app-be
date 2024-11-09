@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 const productController = {};
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 8;
 productController.createProduct = async (req, res) => {
   try {
     const {
@@ -28,7 +28,20 @@ productController.createProduct = async (req, res) => {
     });
 
     await product.save();
-    res.status(200).json({ status: "success", product });
+
+    let response = { status: "success" };
+    response.data = product;
+
+    // 최종 몇 개의 페이지가 나올지 확인
+    // 데이터가 총 몇개인지 확인
+    const totalItemNum = await Product.find({
+      isDeleted: false,
+    }).countDocuments();
+    // 그 데이터 총 개수 / PAGE_SIZE
+    const totalPageNum = Math.ceil(totalItemNum / PAGE_SIZE);
+    response.totalPageNum = totalPageNum;
+
+    res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ status: "fail", message: error.message });
   }
@@ -36,10 +49,22 @@ productController.createProduct = async (req, res) => {
 
 productController.getProducts = async (req, res) => {
   try {
-    const { page, name } = req.query;
+    const { page, name, minPrice, maxPrice } = req.query;
     const cond = name
       ? { name: { $regex: name, $options: "i" }, isDeleted: false }
       : { isDeleted: false };
+
+    // 가격 필터링 적용했을 경우
+    if (minPrice || maxPrice) {
+      cond.price = {}; // 가격 조건 객체 생성
+      if (minPrice) {
+        cond.price.$gte = parseInt(minPrice, 10);
+      }
+      if (maxPrice) {
+        cond.price.$lte = parseInt(maxPrice, 10);
+      }
+    }
+
     let query = Product.find(cond);
     let response = { status: "success" };
 
@@ -191,4 +216,5 @@ productController.checkItemListStock = async (itemList) => {
 
   return [];
 };
+
 module.exports = productController;

@@ -80,7 +80,10 @@ authController.authenticate = async (req, res, next) => {
     if (!tokenString) throw new Error("Token not found");
     const token = tokenString.replace("Bearer ", "");
     jwt.verify(token, JWT_SECRET_KEY, (error, payload) => {
-      if (error) throw new Error("invalid token");
+      if (error)
+        throw new Error(
+          "유효하지 않은 토큰입니다. 로그인을 다시 한번 시도해주세요"
+        );
       req.userId = payload._id;
     });
     next();
